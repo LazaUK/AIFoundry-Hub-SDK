@@ -1,7 +1,5 @@
 # Azure AI Studio: Creating Hub resource with Azure Python SDK
-This repo explains how to use the **_Azure Python Software Development Kit (SDK)_** to create an Azure AI Studio _hub_ resource. It demonstrates two scenarios:
-1. Creating a Hub with bare minimum configuration (automatically provisioned storage and key vault).
-2. Creating a Hub with existing Azure Storage and Azure Key Vault resources.
+This repo explains how to use the **_Azure Python Software Development Kit (SDK)_** to create an Azure AI Studio _hub_ resource. It demonstrates two scenarios: creating a Hub with bare minimum configuration (automatically provisioned storage and key vault), and creating a Hub with existing Azure Storage and Azure Key Vault resources.
 
 > [!WARNING]
 > You can create an Azure AI Studio hub with an existing Azure Storage account only if:
