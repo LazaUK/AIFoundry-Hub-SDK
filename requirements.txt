@@ -1,4 +1,4 @@
 azure-ai-ml
 azure-identity
 azure-mgmt-storage
-azure.mgmt.keyvault
+azure-mgmt-keyvault
