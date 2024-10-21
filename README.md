@@ -9,7 +9,7 @@ This repo explains how to use the **_Azure Python Software Development Kit (SDK)
 
 ## Table of contents:
 - [Pre-requisites](https://github.com/LazaUK/AIStudio-Hub-SDK#pre-requisites)
-- [Scenario 1: Hub creation with bare minimum configuration]()
+- [Scenario 1: Hub creation with bare minimum configuration](https://github.com/LazaUK/AIStudio-Hub-SDK#scenario-1-hub-creation-with-bare-minimum-configuration)
 - [Scenario 2: Hub creation with existing dependent resources]()
 
 ## Pre-requisites
@@ -92,19 +92,88 @@ print(ai_hub_json)
 ```
 
 ## Scenario 2: Hub creation with existing dependent resources
-1. If you already have an existing **Azure Storage** account, you can retrieve its Resource ID either from the Azure portal, or by using the following Az CLI command:
-``` PowerShell
-az storage account show --name <STORAGE_NAME> --query "id"
+1. If you already have an existing **Azure Storage** account, you can retrieve its Resource ID either from the Azure portal, or by using the **Azure Management SDK for Storage**:
+``` Python
+storage_client = StorageManagementClient(
+    credential = DefaultAzureCredential(),
+    subscription_id = subscription_id
+)
+
+storage_account_id = storage_client.storage_accounts.get_properties(
+    resource_group,
+    ai_hub_storage_account
+).id
 ```
 > [!Note]
 > The returned Storage account's **Resource ID** should look like this: _/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Storage/storageAccounts/<STORAGE_ACCOUNT>_
-2. If you already have an existing **Azure Kay Vault**, you can retrieve its Resource ID either from the Azure portal, or by using the following Az CLI command:
-``` PowerShell
-az keyvault show --name <KEYVAULT_NAME> --query "id"
+2. If you already have an existing **Azure Kay Vault**, you can retrieve its Resource ID either from the Azure portal, or by using the **Azure Management SDK for Key Vault**:
+``` Python
+key_vault_client = KeyVaultManagementClient(
+    credential = DefaultAzureCredential(),
+    subscription_id = subscription_id
+)
+
+key_vault_id = key_vault_client.vaults.get(
+    resource_group,
+    ai_hub_key_vault
+).id
 ```
 > [!Note]
 > The returned Key Vault's **Resource ID** should look like this: _/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.KeyVault/vaults/<KEY_VAULT>_
-3. You can use the Resource IDs from the above steps to specify existing Storage and Key Vault as the default dependent resources for the new Hub resource in the following Azure CLI command:
-``` PowerShell
-az ml workspace create --kind hub --resource-group <RESOURCE_GROUP_NAME> --name <HUB_NAME> --display-name <HUB_DISPLAY_NAME> --description <HUB_DESCRIPTION> --location <HUB_AZURE_REGION> --storage-account <STORAGE_RESOURCE_ID> --key-vault <KEYVAULT_RESOURCE_ID>
+3. You can use the Resource IDs from the above steps to set the values of ```storage_account``` and ```key_vault``` properties of a _Hub_ resource:
+``` Python
+ai_hub_config = Hub(
+    name = ai_hub_name,
+    display_name = ai_hub_display_name,
+    description = ai_hub_description,
+    location = ai_hub_location,
+    resource_group = ai_hub_resource_group,
+    storage_account = storage_account_id, # Existing storage account's Resource ID
+    key_vault = key_vault_id # Existing key vault's Resource ID
+)
+```
+4. Next step would be to create a new Hub resource with **Azure ML SDK**:
+``` Python
+ai_hub = client.workspaces.begin_create(ai_hub_config).result()
+```
+5. As our Hub's configuration had references to existing Storage and Key Vault resources, Azure will create only Hub resource this time:
+``` JSON
+The deployment request Demo_AI_Hub_2-6075587 was accepted. ARM deployment URI for reference: <ARM_ID>
+Creating AzureML Workspace: (Demo_AI_Hub_2  ) ......  Done (36s)
+Total time : 37s
+```
+6. You can retrieve Hub's properties with the following code:
+``` Python
+ai_hub_json = json.dumps(ai_hub._to_dict(), indent=4)
+print(ai_hub_json)
+```
+7. Generated output will confirm that the newly created Hub is configured to use existing Storage and Key Vault resources:
+``` JSON
+{
+    "name": "Demo_AI_Hub_2",
+    "location": "swedencentral",
+    "id": <Hub_ARM_ID>,
+    "resource_group": "AAA_AIHUB",
+    "description": "Demo AI Hub with existing dependent resources",
+    "display_name": "Demo AI Hub 2",
+    "hbi_workspace": false,
+    "storage_account": <Storage_ARM_ID>,
+    "key_vault": <KeyVault_ARM_ID>,
+    "tags": {
+        "createdByToolkit": "sdk-v2-1.21.1"
+    },
+    "public_network_access": "Enabled",
+    "identity": {
+        "type": "system_assigned",
+        "principal_id": "XXX",
+        "tenant_id": "YYY"
+    },
+    "managed_network": {
+        "isolation_mode": "disabled",
+        "outbound_rules": []
+    },
+    "enable_data_isolation": true,
+    "default_resource_group": <Resource_Group>,
+    "associated_workspaces": []
+}
 ```
