@@ -8,7 +8,7 @@ This repo explains how to use the **_Azure Python Software Development Kit (SDK)
 > - If storage is of _Azure Data Lake Storage_ type, then its _Hierarchical namespace_ feature is disabled.
 
 ## Table of contents:
-- [Pre-requisites]()
+- [Pre-requisites](https://github.com/LazaUK/AIStudio-Hub-SDK#pre-requisites)
 - [Scenario 1: Hub creation with bare minimum configuration]()
 - [Scenario 2: Hub creation with existing dependent resources]()
 
@@ -24,11 +24,72 @@ pip install -r requirements.txt
 ```
 
 ## Scenario 1: Hub creation with bare minimum configuration
-1. You can create an Azure AI Studio hub with the following Az CLI command by providing values for only two mandatory parameters: **Resource Group** and **Hub** name:
-``` PowerShell
-az ml workspace create --kind hub --resource-group <RESOURCE_GROUP_NAME> --name <AI_HUB_NAME>
+1. To create Hub resource in Azure, you need to initialise **MLClient** first. ```DefaultAzureCredential``` class allows your code to check available identities in your environment and retrieve relevant access token automatically:
+``` Python
+client = MLClient(
+    credential = DefaultAzureCredential(),
+    subscription_id = subscription_id,
+    resource_group = resource_group
+)
 ```
-2. As no other details are provided, Azure will automatically provision dependent **Azure Storage** and **Azure Key Vault** resources.
+2. You can instantiate then the Hub object with desired property values, such as name, resource group and Azure region location:
+``` Python
+# Instantiate Hub object
+ai_hub_config = Hub(
+    name = ai_hub_name,
+    display_name = ai_hub_display_name,
+    description = ai_hub_description,
+    location = ai_hub_location,
+    resource_group = ai_hub_resource_group
+)
+```
+3. You can create a new Hub resource then by _begin_create()_ function of MLClient's workspaces class with the earlier created Python _Hub_ object:
+``` Python
+ai_hub = client.workspaces.begin_create(ai_hub_config).result()
+```
+4. If successful, you should see the function's output similar to this:
+``` JSON
+The deployment request Demo_AI_Hub_1-xxxxxx was accepted. ARM deployment URI for reference: <ARM_ID>
+Creating Key Vault: (<Storage_Account_Name>  ) ..  Done (22s)
+Creating Storage Account: (<Key Vault_Name>  )  Done (23s)
+Creating AzureML Workspace: (Demo_AI_Hub_1  ) .....  Done (36s)
+Total time : 1m 2s
+```
+5. As shown in the above step, Azure ML SDK automatically provisioned dependent **Azure Storage** and **Azure Key Vault** resources. To get detailed information about the newly created Hub resoutrce, you can print its properties as shown below:
+``` Python
+ai_hub_json = json.dumps(ai_hub._to_dict(), indent=4)
+print(ai_hub_json)
+```
+6. This should generate JSON output similar to this:
+``` JSON
+{
+    "name": "Demo_AI_Hub_1",
+    "location": "swedencentral",
+    "id": <Hub_ARM_ID>,
+    "resource_group": "AAA_AIHUB",
+    "description": "Demo AI Hub with bare minimum configuration",
+    "display_name": "Demo AI Hub 1",
+    "hbi_workspace": false,
+    "storage_account": <Storage_ARM_ID>,
+    "key_vault": <KeyVault_ARM_ID>,
+    "tags": {
+        "createdByToolkit": "sdk-v2-1.21.1"
+    },
+    "public_network_access": "Enabled",
+    "identity": {
+        "type": "system_assigned",
+        "principal_id": "XXX",
+        "tenant_id": "YYY"
+    },
+    "managed_network": {
+        "isolation_mode": "disabled",
+        "outbound_rules": []
+    },
+    "enable_data_isolation": true,
+    "default_resource_group": <Resource_Group>,
+    "associated_workspaces": []
+}
+```
 
 ## Scenario 2: Hub creation with existing dependent resources
 1. If you already have an existing **Azure Storage** account, you can retrieve its Resource ID either from the Azure portal, or by using the following Az CLI command:
