@@ -18,7 +18,7 @@ This repo explains how to use the **_Azure Python Software Development Kit (SDK)
     - An Azure Storage account (for Scenario 2),
     - An Azure Key Vault (for Scenario 2),
     - Python 3.11 or later.
-2. You can install the required ```Azure ML SDK```, ```Azure Identity```, ```Azure Storage``` and ```Azure Key Vault``` Python packages using pip command:
+2. You can install the required ```Azure ML```, ```Azure Identity```, ```Azure Storage``` and ```Azure Key Vault``` Python SDK packages using pip command:
 ``` PowerShell
 pip install -r requirements.txt
 ```
