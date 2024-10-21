@@ -10,7 +10,7 @@ This repo explains how to use the **_Azure Python Software Development Kit (SDK)
 ## Table of contents:
 - [Pre-requisites](https://github.com/LazaUK/AIStudio-Hub-SDK#pre-requisites)
 - [Scenario 1: Hub creation with bare minimum configuration](https://github.com/LazaUK/AIStudio-Hub-SDK#scenario-1-hub-creation-with-bare-minimum-configuration)
-- [Scenario 2: Hub creation with existing dependent resources]()
+- [Scenario 2: Hub creation with existing dependent resources](https://github.com/LazaUK/AIStudio-Hub-SDK#scenario-2-hub-creation-with-existing-dependent-resources)
 
 ## Pre-requisites
 1. To follow these steps, you'll need:
@@ -138,7 +138,7 @@ ai_hub = client.workspaces.begin_create(ai_hub_config).result()
 ```
 5. As our Hub's configuration had references to existing Storage and Key Vault resources, Azure will create only Hub resource this time:
 ``` JSON
-The deployment request Demo_AI_Hub_2-6075587 was accepted. ARM deployment URI for reference: <ARM_ID>
+The deployment request Demo_AI_Hub_2-xxxxxx was accepted. ARM deployment URI for reference: <ARM_ID>
 Creating AzureML Workspace: (Demo_AI_Hub_2  ) ......  Done (36s)
 Total time : 37s
 ```
