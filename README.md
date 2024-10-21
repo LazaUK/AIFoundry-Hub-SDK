@@ -132,22 +132,22 @@ ai_hub_config = Hub(
     key_vault = key_vault_id # Existing key vault's Resource ID
 )
 ```
-4. Next step would be to create a new Hub resource with **Azure ML SDK**:
+4. The next step would be to create a new Hub resource with the **Azure ML SDK**:
 ``` Python
 ai_hub = client.workspaces.begin_create(ai_hub_config).result()
 ```
-5. As our Hub's configuration had references to existing Storage and Key Vault resources, Azure will create only Hub resource this time:
+5. As our Hub's configuration references existing Storage and Key Vault resources, Azure will create only the Hub resource this time:
 ``` JSON
 The deployment request Demo_AI_Hub_2-xxxxxx was accepted. ARM deployment URI for reference: <ARM_ID>
 Creating AzureML Workspace: (Demo_AI_Hub_2  ) ......  Done (36s)
 Total time : 37s
 ```
-6. You can retrieve Hub's properties with the following code:
+6. You can retrieve the Hub's properties with the following code:
 ``` Python
 ai_hub_json = json.dumps(ai_hub._to_dict(), indent=4)
 print(ai_hub_json)
 ```
-7. Generated output will confirm that the newly created Hub is configured to use existing Storage and Key Vault resources:
+7. The generated output will confirm that the newly created Hub is configured to use existing Storage and Key Vault resources:
 ``` JSON
 {
     "name": "Demo_AI_Hub_2",
