@@ -18,13 +18,13 @@ This repo explains how to use the **_Azure Python Software Development Kit (SDK)
     - An Azure Storage account (for Scenario 2),
     - An Azure Key Vault (for Scenario 2),
     - Python 3.11 or later.
-2. You can install the required ```Azure ML SDK```, ```Azure Identity```, ```Azure Storage``` and ```Azure Key Vault``` Python packages using pip:
+2. You can install the required ```Azure ML SDK```, ```Azure Identity```, ```Azure Storage``` and ```Azure Key Vault``` Python packages using pip command:
 ``` PowerShell
 pip install -r requirements.txt
 ```
 
 ## Scenario 1: Hub creation with bare minimum configuration
-1. To create Hub resource in Azure, you need to initialise **MLClient** first. ```DefaultAzureCredential``` class allows your code to check available identities in your environment and retrieve relevant access token automatically:
+1. To create a Hub resource in Azure, you need to initialise **MLClient** first. The ```DefaultAzureCredential``` class allows your code to check available identities in your environment and retrieve the relevant access token automatically:
 ``` Python
 client = MLClient(
     credential = DefaultAzureCredential(),
@@ -32,7 +32,7 @@ client = MLClient(
     resource_group = resource_group
 )
 ```
-2. You can instantiate then the Hub object with desired property values, such as name, resource group and Azure region location:
+2. You can then instantiate the Hub object with desired property values, such as _name_, _resource_group_ and Azure region _location_:
 ``` Python
 # Instantiate Hub object
 ai_hub_config = Hub(
@@ -43,7 +43,7 @@ ai_hub_config = Hub(
     resource_group = ai_hub_resource_group
 )
 ```
-3. You can create a new Hub resource then by _begin_create()_ function of MLClient's workspaces class with the earlier created Python _Hub_ object:
+3. You can create a new Hub resource by using the _begin_create()_ function of MLClient's _workspaces_ class with the previously created Python _Hub_ object:
 ``` Python
 ai_hub = client.workspaces.begin_create(ai_hub_config).result()
 ```
@@ -55,7 +55,7 @@ Creating Storage Account: (<Key Vault_Name>  )  Done (23s)
 Creating AzureML Workspace: (Demo_AI_Hub_1  ) .....  Done (36s)
 Total time : 1m 2s
 ```
-5. As shown in the above step, Azure ML SDK automatically provisioned dependent **Azure Storage** and **Azure Key Vault** resources. To get detailed information about the newly created Hub resoutrce, you can print its properties as shown below:
+5. As shown in the above step, the **Azure ML SDK** automatically provisioned dependent **Azure Storage** and **Azure Key Vault** resources. To get detailed information about the newly created Hub resoutrce, you can print its properties as shown below:
 ``` Python
 ai_hub_json = json.dumps(ai_hub._to_dict(), indent=4)
 print(ai_hub_json)
