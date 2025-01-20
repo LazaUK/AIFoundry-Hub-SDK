@@ -1,16 +1,16 @@
-# Azure AI Studio: Creating Hub resource with Azure Python SDK
-This repo explains how to use the **_Azure Python Software Development Kit (SDK)_** to create an Azure AI Studio _hub_ resource. It demonstrates two scenarios: creating a Hub with bare minimum configuration (automatically provisioned storage and key vault), and creating a Hub with existing Azure Storage and Azure Key Vault resources.
+# Azure AI Foundry: Creating Hub resource with Azure Python SDK
+This repo explains how to use the **_Azure Python Software Development Kit (SDK)_** to create an Azure AI Foundry _hub_ resource. It demonstrates two scenarios: creating a Hub with bare minimum configuration (automatically provisioned storage and key vault), and creating a Hub with existing Azure Storage and Azure Key Vault resources.
 
 > [!WARNING]
-> You can create an Azure AI Studio hub with an existing Azure Storage account only if:
+> You can create an Azure AI Foundry hub with an existing Azure Storage account only if:
 > - The Storage account uses the _Standard_ performance tier, not _Premium_,
 > - Both _Blob_ and _File_ service capabilities are enabled,
 > - If storage is of _Azure Data Lake Storage_ type, then its _Hierarchical namespace_ feature is disabled.
 
 ## Table of contents:
-- [Pre-requisites](https://github.com/LazaUK/AIStudio-Hub-SDK#pre-requisites)
-- [Scenario 1: Hub creation with bare minimum configuration](https://github.com/LazaUK/AIStudio-Hub-SDK#scenario-1-hub-creation-with-bare-minimum-configuration)
-- [Scenario 2: Hub creation with existing dependent resources](https://github.com/LazaUK/AIStudio-Hub-SDK#scenario-2-hub-creation-with-existing-dependent-resources)
+- [Pre-requisites](https://github.com/LazaUK/AIFoundry-Hub-SDK#pre-requisites)
+- [Scenario 1: Hub creation with bare minimum configuration](https://github.com/LazaUK/AIFoundry-Hub-SDK#scenario-1-hub-creation-with-bare-minimum-configuration)
+- [Scenario 2: Hub creation with existing dependent resources](https://github.com/LazaUK/AIFoundry-Hub-SDK#scenario-2-hub-creation-with-existing-dependent-resources)
 
 ## Pre-requisites
 1. To follow these steps, you'll need:
